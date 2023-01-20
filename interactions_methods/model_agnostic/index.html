@@ -202,7 +202,11 @@ unnrormalized version is square root of nominator of H statistic. Defaults to Tr
         if calculate_ova:
             self.ova = self._calculate_ova_interactions_from_pd(show_progress)
 
-    def plot(self, vis_type: str = VisualizationType.HEATMAP, title: str = &#34;default&#34;, figsize: tuple = (8, 6), show: bool = True, **kwargs):
+    def plot(self,
+             vis_type: str = VisualizationType.HEATMAP,
+             title: str = &#34;default&#34;,
+             figsize: Tuple[float, float] = (8, 6),
+             **kwargs):
         &#34;&#34;&#34;
         Plot results of explanations.
 
@@ -221,8 +225,6 @@ unnrormalized version is square root of nominator of H statistic. Defaults to Tr
             Title of plot, default is &#39;default&#39; which means that title will be automatically generated for selected visualization type.
         figsize : (float, float) 
             Size of plot. Default is (8, 6).
-        show : bool 
-            Whether to show plot. Default is True.
         **kwargs : Other Parameters
             Additional parameters for plot. Passed to suitable matplotlib or seaborn functions. 
             For &#39;summary&#39; visualization parameters for respective plots should be in dict with keys corresponding to visualization name. 
@@ -277,7 +279,6 @@ unnrormalized version is square root of nominator of H statistic. Defaults to Tr
                              feature_importance=self.feature_importance,
                              title=title,
                              figsize=figsize,
-                             show=show,
                              interactions_ascending_order=self._interactions_ascending_order,
                              importance_ascending_order=self._feature_importance_obj.importance_ascending_order,
                              **kwargs)
@@ -287,26 +288,29 @@ unnrormalized version is square root of nominator of H statistic. Defaults to Tr
         preds = self.predict_function(self.model, self.X_sampled)
         value_minus_single = []
         for feature in self.features_included:
-            pd_f = self.pd_calculator.get_pd_single(feature, feature_values = self.X_sampled[feature].values)
+            pd_f = self.pd_calculator.get_pd_single(feature, feature_values=self.X_sampled[feature].values)
             pd_f_minus = self.pd_calculator.get_pd_minus_single(feature)
             value_minus_single.append([feature, _calculate_hstat_value(pd_f, pd_f_minus, preds, self.normalized)])
-        return pd.DataFrame(value_minus_single, columns=[&#34;Feature&#34;, InteractionMethod.H_STATISTIC]).sort_values(
-            by=InteractionMethod.H_STATISTIC, ascending=self._interactions_ascending_order, ignore_index=True
-        ).fillna(0)
+        return pd.DataFrame(value_minus_single, columns=[&#34;Feature&#34;, InteractionMethod.H_STATISTIC
+                                                         ]).sort_values(by=InteractionMethod.H_STATISTIC,
+                                                                        ascending=self._interactions_ascending_order,
+                                                                        ignore_index=True).fillna(0)
 
     def _calculate_ovo_interactions_from_pd(self, show_progress: bool):
         self.pd_calculator.calculate_pd_pairs(self.pairs, show_progress=show_progress, all_combinations=False)
         self.pd_calculator.calculate_pd_single(self.features_included, show_progress=False)
         value_pairs = []
         for pair in self.pairs:
-            pd_f1 = self.pd_calculator.get_pd_single(pair[0], feature_values = self.X_sampled[pair[0]].values)
-            pd_f2 = self.pd_calculator.get_pd_single(pair[1], feature_values = self.X_sampled[pair[1]].values)
+            pd_f1 = self.pd_calculator.get_pd_single(pair[0], feature_values=self.X_sampled[pair[0]].values)
+            pd_f2 = self.pd_calculator.get_pd_single(pair[1], feature_values=self.X_sampled[pair[1]].values)
             pair_feature_values = list(zip(self.X_sampled[pair[0]].values, self.X_sampled[pair[1]].values))
-            pd_pair = self.pd_calculator.get_pd_pairs(pair[0], pair[1], feature_values = pair_feature_values)
+            pd_pair = self.pd_calculator.get_pd_pairs(pair[0], pair[1], feature_values=pair_feature_values)
             value_pairs.append([pair[0], pair[1], _calculate_hstat_value(pd_f1, pd_f2, pd_pair, self.normalized)])
-        return pd.DataFrame(value_pairs, columns=[&#34;Feature 1&#34;, &#34;Feature 2&#34;, self.method]).sort_values(
-            by=self.method, ascending=self._interactions_ascending_order, ignore_index=True
-        ).fillna(0)</code></pre>
+        return pd.DataFrame(value_pairs,
+                            columns=[&#34;Feature 1&#34;, &#34;Feature 2&#34;,
+                                     self.method]).sort_values(by=self.method,
+                                                               ascending=self._interactions_ascending_order,
+                                                               ignore_index=True).fillna(0)</code></pre>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -397,7 +401,7 @@ If None, it will be created from scratch. Default is None.</dd>
 </details>
 </dd>
 <dt id="artemis.interactions_methods.model_agnostic.FriedmanHStatisticMethod.plot"><code class="name flex">
-<span>def <span class="ident">plot</span></span>(<span>self, vis_type: str = 'heatmap', title: str = 'default', figsize: tuple = (8, 6), show: bool = True, **kwargs)</span>
+<span>def <span class="ident">plot</span></span>(<span>self, vis_type: str = 'heatmap', title: str = 'default', figsize: Tuple[float, float] = (8, 6), **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Plot results of explanations.</p>
@@ -415,8 +419,6 @@ If None, it will be created from scratch. Default is None.</dd>
 <dd>Title of plot, default is 'default' which means that title will be automatically generated for selected visualization type.</dd>
 <dt><strong><code>figsize</code></strong> :&ensp;<code>(float, float) </code></dt>
 <dd>Size of plot. Default is (8, 6).</dd>
-<dt><strong><code>show</code></strong> :&ensp;<code>bool </code></dt>
-<dd>Whether to show plot. Default is True.</dd>
 <dt><strong><code>**kwargs</code></strong> :&ensp;<code>Other Parameters</code></dt>
 <dd>Additional parameters for plot. Passed to suitable matplotlib or seaborn functions.
 For 'summary' visualization parameters for respective plots should be in dict with keys corresponding to visualization name.
@@ -466,7 +468,11 @@ corresponding edge on visualization. Default depends on the interaction method.<
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def plot(self, vis_type: str = VisualizationType.HEATMAP, title: str = &#34;default&#34;, figsize: tuple = (8, 6), show: bool = True, **kwargs):
+<pre><code class="python">def plot(self,
+         vis_type: str = VisualizationType.HEATMAP,
+         title: str = &#34;default&#34;,
+         figsize: Tuple[float, float] = (8, 6),
+         **kwargs):
     &#34;&#34;&#34;
     Plot results of explanations.
 
@@ -485,8 +491,6 @@ corresponding edge on visualization. Default depends on the interaction method.<
         Title of plot, default is &#39;default&#39; which means that title will be automatically generated for selected visualization type.
     figsize : (float, float) 
         Size of plot. Default is (8, 6).
-    show : bool 
-        Whether to show plot. Default is True.
     **kwargs : Other Parameters
         Additional parameters for plot. Passed to suitable matplotlib or seaborn functions. 
         For &#39;summary&#39; visualization parameters for respective plots should be in dict with keys corresponding to visualization name. 
@@ -541,7 +545,6 @@ corresponding edge on visualization. Default depends on the interaction method.<
                          feature_importance=self.feature_importance,
                          title=title,
                          figsize=figsize,
-                         show=show,
                          interactions_ascending_order=self._interactions_ascending_order,
                          importance_ascending_order=self._feature_importance_obj.importance_ascending_order,
                          **kwargs)</code></pre>
@@ -626,7 +629,6 @@ corresponding edge on visualization. Default depends on the interaction method.<
     ----------
     - https://arxiv.org/pdf/1805.04755.pdf
     &#34;&#34;&#34;
-
     def __init__(self, random_state: Optional[int] = None):
         &#34;&#34;&#34;Constructor for GreenwellMethod
         
@@ -648,9 +650,13 @@ corresponding edge on visualization. Default depends on the interaction method.<
             pd_calculator: Optional[PartialDependenceCalculator] = None):
         super().fit(model, X, n, predict_function, features, show_progress, batchsize, pd_calculator)
 
-    def plot(self, vis_type: str = VisualizationType.HEATMAP, title: str = &#34;default&#34;,
-             figsize: Tuple[float, float] = (8, 6), show: bool = True, **kwargs):
-        super().plot(vis_type, title, figsize, show)
+    def plot(self,
+             vis_type: str = VisualizationType.HEATMAP,
+             title: str = &#34;default&#34;,
+             figsize: Tuple[float, float] = (8, 6),
+             **kwargs):
+        super().plot(vis_type, title, figsize, **kwargs)
+
 
     def _calculate_ovo_interactions_from_pd(self, show_progress: bool = False):
         self.pd_calculator.calculate_pd_pairs(self.pairs, show_progress=show_progress)
@@ -680,7 +686,7 @@ corresponding edge on visualization. Default depends on the interaction method.<
 <span>def <span class="ident">fit</span></span>(<span>self, model, X: pandas.core.frame.DataFrame, n: Optional[int] = None, predict_function: Optional[Callable] = None, features: Optional[List[str]] = None, show_progress: bool = False, batchsize: int = 2000, pd_calculator: Optional[artemis._utilities.pd_calculator.PartialDependenceCalculator] = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Calculates Partial Dependence Based Feature Interactions Strength and Feature Importance for the given model. </p>
+<div class="desc"><p>Calculates Partial Dependence Based Feature Interactions Strength and Feature Importance for the given model.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>model</code></strong> :&ensp;<code>object</code></dt>
@@ -722,7 +728,7 @@ If None, it will be created from scratch. Default is None.</dd>
 </details>
 </dd>
 <dt id="artemis.interactions_methods.model_agnostic.GreenwellMethod.plot"><code class="name flex">
-<span>def <span class="ident">plot</span></span>(<span>self, vis_type: str = 'heatmap', title: str = 'default', figsize: Tuple[float, float] = (8, 6), show: bool = True, **kwargs)</span>
+<span>def <span class="ident">plot</span></span>(<span>self, vis_type: str = 'heatmap', title: str = 'default', figsize: Tuple[float, float] = (8, 6), **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Plot results of explanations.</p>
@@ -739,8 +745,6 @@ If None, it will be created from scratch. Default is None.</dd>
 <dd>Title of plot, default is 'default' which means that title will be automatically generated for selected visualization type.</dd>
 <dt><strong><code>figsize</code></strong> :&ensp;<code>(float, float) </code></dt>
 <dd>Size of plot. Default is (8, 6).</dd>
-<dt><strong><code>show</code></strong> :&ensp;<code>bool </code></dt>
-<dd>Whether to show plot. Default is True.</dd>
 <dt><strong><code>**kwargs</code></strong> :&ensp;<code>Other Parameters</code></dt>
 <dd>Additional parameters for plot. Passed to suitable matplotlib or seaborn functions.
 For 'summary' visualization parameters for respective plots should be in dict with keys corresponding to visualization name.
@@ -790,9 +794,12 @@ corresponding edge on visualization. Default depends on the interaction method.<
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def plot(self, vis_type: str = VisualizationType.HEATMAP, title: str = &#34;default&#34;,
-         figsize: Tuple[float, float] = (8, 6), show: bool = True, **kwargs):
-    super().plot(vis_type, title, figsize, show)</code></pre>
+<pre><code class="python">def plot(self,
+         vis_type: str = VisualizationType.HEATMAP,
+         title: str = &#34;default&#34;,
+         figsize: Tuple[float, float] = (8, 6),
+         **kwargs):
+    super().plot(vis_type, title, figsize, **kwargs)</code></pre>
 </details>
 </dd>
 </dl>
@@ -897,8 +904,8 @@ corresponding edge on visualization. Default depends on the interaction method.<
         return False
 
     def plot(self, vis_type: str = VisualizationType.HEATMAP, title: str = &#34;default&#34;,
-             figsize: Tuple[float, float] = (8, 6), show: bool = True, **kwargs):
-        super().plot(vis_type, title, figsize, show)
+             figsize: Tuple[float, float] = (8, 6), **kwargs):
+        super().plot(vis_type, title, figsize, **kwargs)
 
     def fit(
             self,
@@ -1019,7 +1026,7 @@ corresponding edge on visualization. Default depends on the interaction method.<
 </details>
 </dd>
 <dt id="artemis.interactions_methods.model_agnostic.SejongOhMethod.plot"><code class="name flex">
-<span>def <span class="ident">plot</span></span>(<span>self, vis_type: str = 'heatmap', title: str = 'default', figsize: Tuple[float, float] = (8, 6), show: bool = True, **kwargs)</span>
+<span>def <span class="ident">plot</span></span>(<span>self, vis_type: str = 'heatmap', title: str = 'default', figsize: Tuple[float, float] = (8, 6), **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Plot results of explanations.</p>
@@ -1036,8 +1043,6 @@ corresponding edge on visualization. Default depends on the interaction method.<
 <dd>Title of plot, default is 'default' which means that title will be automatically generated for selected visualization type.</dd>
 <dt><strong><code>figsize</code></strong> :&ensp;<code>(float, float) </code></dt>
 <dd>Size of plot. Default is (8, 6).</dd>
-<dt><strong><code>show</code></strong> :&ensp;<code>bool </code></dt>
-<dd>Whether to show plot. Default is True.</dd>
 <dt><strong><code>**kwargs</code></strong> :&ensp;<code>Other Parameters</code></dt>
 <dd>Additional parameters for plot. Passed to suitable matplotlib or seaborn functions.
 For 'summary' visualization parameters for respective plots should be in dict with keys corresponding to visualization name.
@@ -1088,8 +1093,8 @@ corresponding edge on visualization. Default depends on the interaction method.<
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def plot(self, vis_type: str = VisualizationType.HEATMAP, title: str = &#34;default&#34;,
-         figsize: Tuple[float, float] = (8, 6), show: bool = True, **kwargs):
-    super().plot(vis_type, title, figsize, show)</code></pre>
+         figsize: Tuple[float, float] = (8, 6), **kwargs):
+    super().plot(vis_type, title, figsize, **kwargs)</code></pre>
 </details>
 </dd>
 </dl>

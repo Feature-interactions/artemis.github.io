@@ -283,6 +283,12 @@ unnrormalized version is square root of nominator of H statistic. Defaults to Tr
                              importance_ascending_order=self._feature_importance_obj.importance_ascending_order,
                              **kwargs)
 
+    def plot_profile(self, feature1: str, feature2: Optional[str] = None, kind: str = &#34;colormesh&#34;, cmap: str = &#34;RdYlBu_r&#34;, figsize: Tuple[float, float] = (14, 12)):
+        return super().plot_profile(feature1, feature2, kind, cmap, figsize)
+    
+    def plot_zenplot(self, zenpath_length: int = 7, kind: str = &#34;colormesh&#34;, cmap: str = &#34;RdYlBu_r&#34;, figsize: Tuple[float, float] = (14, 12)):
+        return super().plot_zenplot(zenpath_length, kind, cmap, figsize)
+
     def _calculate_ova_interactions_from_pd(self, show_progress: bool) -&gt; pd.DataFrame:
         self.pd_calculator.calculate_pd_minus_single(self.features_included, show_progress=show_progress)
         preds = self.predict_function(self.model, self.X_sampled)
@@ -550,6 +556,60 @@ corresponding edge on visualization. Default depends on the interaction method.<
                          **kwargs)</code></pre>
 </details>
 </dd>
+<dt id="artemis.interactions_methods.model_agnostic.FriedmanHStatisticMethod.plot_profile"><code class="name flex">
+<span>def <span class="ident">plot_profile</span></span>(<span>self, feature1: str, feature2: Optional[str] = None, kind: str = 'colormesh', cmap: str = 'RdYlBu_r', figsize: Tuple[float, float] = (14, 12))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Plots partial dependence profile for a given feature/pair of features.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>feature1</code></strong> :&ensp;<code>str </code></dt>
+<dd>First feature.</dd>
+<dt><strong><code>feature2</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Second feature. If None, profile for a single feature will be plotted. Default is None.</dd>
+<dt><strong><code>kind</code></strong> :&ensp;<code>str </code></dt>
+<dd>Kind of plot, used only for pair of features. Can be 'colormesh' or 'contour'. Default is 'colormesh'.</dd>
+<dt><strong><code>cmap</code></strong> :&ensp;<code>str </code></dt>
+<dd>Colormap. Default is 'RdYlBu_r'.</dd>
+<dt><strong><code>figsize</code></strong> :&ensp;<code>(float, float) </code></dt>
+<dd>Size of plot. Default is (8, 6).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot_profile(self, feature1: str, feature2: Optional[str] = None, kind: str = &#34;colormesh&#34;, cmap: str = &#34;RdYlBu_r&#34;, figsize: Tuple[float, float] = (14, 12)):
+    return super().plot_profile(feature1, feature2, kind, cmap, figsize)</code></pre>
+</details>
+</dd>
+<dt id="artemis.interactions_methods.model_agnostic.FriedmanHStatisticMethod.plot_zenplot"><code class="name flex">
+<span>def <span class="ident">plot_zenplot</span></span>(<span>self, zenpath_length: int = 7, kind: str = 'colormesh', cmap: str = 'RdYlBu_r', figsize: Tuple[float, float] = (14, 12))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Plots zenplot, a grid of charts where each panel contains a PD function visualization for a different pair of features</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>zenpath_length</code></strong> :&ensp;<code>int</code></dt>
+<dd>Length of zenpath. Default is 7.</dd>
+<dt><strong><code>kind</code></strong> :&ensp;<code>str </code></dt>
+<dd>Kind of plot. Can be 'colormesh' or 'contour'. Default is 'colormesh'.</dd>
+<dt><strong><code>cmap</code></strong> :&ensp;<code>str </code></dt>
+<dd>Colormap. Default is 'RdYlBu_r'.</dd>
+<dt><strong><code>figsize</code></strong> :&ensp;<code>(float, float) </code></dt>
+<dd>Size of plot. Default is (8, 6).</dd>
+</dl>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.jstatsoft.org/article/view/v095i04">https://www.jstatsoft.org/article/view/v095i04</a></li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot_zenplot(self, zenpath_length: int = 7, kind: str = &#34;colormesh&#34;, cmap: str = &#34;RdYlBu_r&#34;, figsize: Tuple[float, float] = (14, 12)):
+    return super().plot_zenplot(zenpath_length, kind, cmap, figsize)</code></pre>
+</details>
+</dd>
 </dl>
 </dd>
 <dt id="artemis.interactions_methods.model_agnostic.GreenwellMethod"><code class="flex name class">
@@ -656,7 +716,12 @@ corresponding edge on visualization. Default depends on the interaction method.<
              figsize: Tuple[float, float] = (8, 6),
              **kwargs):
         super().plot(vis_type, title, figsize, **kwargs)
-
+    
+    def plot_profile(self, feature1: str, feature2: Optional[str] = None, kind: str = &#34;colormesh&#34;, cmap: str = &#34;RdYlBu_r&#34;, figsize: Tuple[float, float] = (14, 12)):
+        return super().plot_profile(feature1, feature2, kind, cmap, figsize)
+    
+    def plot_zenplot(self, zenpath_length: int = 7, kind: str = &#34;colormesh&#34;, cmap: str = &#34;RdYlBu_r&#34;, figsize: Tuple[float, float] = (14, 12)):
+        return super().plot_zenplot(zenpath_length, kind, cmap, figsize)
 
     def _calculate_ovo_interactions_from_pd(self, show_progress: bool = False):
         self.pd_calculator.calculate_pd_pairs(self.pairs, show_progress=show_progress)
@@ -800,6 +865,60 @@ corresponding edge on visualization. Default depends on the interaction method.<
          figsize: Tuple[float, float] = (8, 6),
          **kwargs):
     super().plot(vis_type, title, figsize, **kwargs)</code></pre>
+</details>
+</dd>
+<dt id="artemis.interactions_methods.model_agnostic.GreenwellMethod.plot_profile"><code class="name flex">
+<span>def <span class="ident">plot_profile</span></span>(<span>self, feature1: str, feature2: Optional[str] = None, kind: str = 'colormesh', cmap: str = 'RdYlBu_r', figsize: Tuple[float, float] = (14, 12))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Plots partial dependence profile for a given feature/pair of features.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>feature1</code></strong> :&ensp;<code>str </code></dt>
+<dd>First feature.</dd>
+<dt><strong><code>feature2</code></strong> :&ensp;<code>str</code>, optional</dt>
+<dd>Second feature. If None, profile for a single feature will be plotted. Default is None.</dd>
+<dt><strong><code>kind</code></strong> :&ensp;<code>str </code></dt>
+<dd>Kind of plot, used only for pair of features. Can be 'colormesh' or 'contour'. Default is 'colormesh'.</dd>
+<dt><strong><code>cmap</code></strong> :&ensp;<code>str </code></dt>
+<dd>Colormap. Default is 'RdYlBu_r'.</dd>
+<dt><strong><code>figsize</code></strong> :&ensp;<code>(float, float) </code></dt>
+<dd>Size of plot. Default is (8, 6).</dd>
+</dl></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot_profile(self, feature1: str, feature2: Optional[str] = None, kind: str = &#34;colormesh&#34;, cmap: str = &#34;RdYlBu_r&#34;, figsize: Tuple[float, float] = (14, 12)):
+    return super().plot_profile(feature1, feature2, kind, cmap, figsize)</code></pre>
+</details>
+</dd>
+<dt id="artemis.interactions_methods.model_agnostic.GreenwellMethod.plot_zenplot"><code class="name flex">
+<span>def <span class="ident">plot_zenplot</span></span>(<span>self, zenpath_length: int = 7, kind: str = 'colormesh', cmap: str = 'RdYlBu_r', figsize: Tuple[float, float] = (14, 12))</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Plots zenplot, a grid of charts where each panel contains a PD function visualization for a different pair of features</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>zenpath_length</code></strong> :&ensp;<code>int</code></dt>
+<dd>Length of zenpath. Default is 7.</dd>
+<dt><strong><code>kind</code></strong> :&ensp;<code>str </code></dt>
+<dd>Kind of plot. Can be 'colormesh' or 'contour'. Default is 'colormesh'.</dd>
+<dt><strong><code>cmap</code></strong> :&ensp;<code>str </code></dt>
+<dd>Colormap. Default is 'RdYlBu_r'.</dd>
+<dt><strong><code>figsize</code></strong> :&ensp;<code>(float, float) </code></dt>
+<dd>Size of plot. Default is (8, 6).</dd>
+</dl>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.jstatsoft.org/article/view/v095i04">https://www.jstatsoft.org/article/view/v095i04</a></li>
+</ul></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def plot_zenplot(self, zenpath_length: int = 7, kind: str = &#34;colormesh&#34;, cmap: str = &#34;RdYlBu_r&#34;, figsize: Tuple[float, float] = (14, 12)):
+    return super().plot_zenplot(zenpath_length, kind, cmap, figsize)</code></pre>
 </details>
 </dd>
 </dl>
@@ -1126,6 +1245,8 @@ corresponding edge on visualization. Default depends on the interaction method.<
 <ul class="">
 <li><code><a title="artemis.interactions_methods.model_agnostic.FriedmanHStatisticMethod.fit" href="#artemis.interactions_methods.model_agnostic.FriedmanHStatisticMethod.fit">fit</a></code></li>
 <li><code><a title="artemis.interactions_methods.model_agnostic.FriedmanHStatisticMethod.plot" href="#artemis.interactions_methods.model_agnostic.FriedmanHStatisticMethod.plot">plot</a></code></li>
+<li><code><a title="artemis.interactions_methods.model_agnostic.FriedmanHStatisticMethod.plot_profile" href="#artemis.interactions_methods.model_agnostic.FriedmanHStatisticMethod.plot_profile">plot_profile</a></code></li>
+<li><code><a title="artemis.interactions_methods.model_agnostic.FriedmanHStatisticMethod.plot_zenplot" href="#artemis.interactions_methods.model_agnostic.FriedmanHStatisticMethod.plot_zenplot">plot_zenplot</a></code></li>
 </ul>
 </li>
 <li>
@@ -1133,6 +1254,8 @@ corresponding edge on visualization. Default depends on the interaction method.<
 <ul class="">
 <li><code><a title="artemis.interactions_methods.model_agnostic.GreenwellMethod.fit" href="#artemis.interactions_methods.model_agnostic.GreenwellMethod.fit">fit</a></code></li>
 <li><code><a title="artemis.interactions_methods.model_agnostic.GreenwellMethod.plot" href="#artemis.interactions_methods.model_agnostic.GreenwellMethod.plot">plot</a></code></li>
+<li><code><a title="artemis.interactions_methods.model_agnostic.GreenwellMethod.plot_profile" href="#artemis.interactions_methods.model_agnostic.GreenwellMethod.plot_profile">plot_profile</a></code></li>
+<li><code><a title="artemis.interactions_methods.model_agnostic.GreenwellMethod.plot_zenplot" href="#artemis.interactions_methods.model_agnostic.GreenwellMethod.plot_zenplot">plot_zenplot</a></code></li>
 </ul>
 </li>
 <li>
